@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'sprint_client'
-  s.version     = '0.0.7'
+  s.version     = '0.0.9'
   s.date        = '2020-10-27'
   s.summary     = "A client gem for SPrint"
   s.description = ""

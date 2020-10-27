@@ -18,7 +18,7 @@ class SprintClient
     }"
 
     # locate the required label template    
-    path = File.join('config', 'sprint', label_template_name)
+    path = File.join('config', 'sprint', 'label_templates', label_template_name)
     template = ERB.new File.read(path)
 
     # parse the template for each label
@@ -37,13 +37,10 @@ class SprintClient
       }
     }
 
-    # send POST request to SPrint url
-    reponse = Net::HTTP.post URI(configatron.sprint_url),
+    # send POST request to SPrint url and return response
+    Net::HTTP.post URI(configatron.sprint_url),
                               body.to_json,
                               'Content-Type' => 'application/json'
 
-    # return response of POST request
-    puts response
-    reponse
   end
 end
