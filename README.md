@@ -8,17 +8,18 @@
 ## How to use this gem in an application
 1. Add `gem 'sprint_client'` to the Gemfile.
 2. Run `bundle install --full-index`
-3. Call `SprintClient.send_print_request()` in the class where required
+3. Add `SprintClient.sprint_uri = 'http://example.com'` to Rails initializer code, with the correct URI for SPrint
+4. Call `SprintClient.send_print_request()` in the class where required
 
 If the above doesn't work
 1. Run `gem list -r sprint_client` to check the gem is accessible
 2. Run `gem install sprint_client`
-1. Run `bundle install` 
+1. Run `bundle install`
 
 When updating
 1. Run `bundle update sprint_client`
 
-### Arguments for `send_print_request`: 
+### Arguments for `send_print_request`:
 
 | Argument | Description |
 |----------|----------------|

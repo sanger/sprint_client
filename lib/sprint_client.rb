@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-# Interfaces with SPrint service: https://github.com/sanger/sprint 
+# Interfaces with SPrint service: https://github.com/sanger/sprint
 class SprintClient
   require 'uri'
   require 'erb'
-        
+
   # printer_name - a string showing which printer to send the request to
   # label_template_name - a string to identify which label template to be used in the print request
   # merge_fields_list - a list of hashes, each containing the field values for a particular label
@@ -17,7 +17,7 @@ class SprintClient
       }
     }"
 
-    # locate the required label template    
+    # locate the required label template
     path = File.join('config', 'sprint', 'label_templates', label_template_name)
     template = ERB.new File.read(path)
 
@@ -38,9 +38,13 @@ class SprintClient
     }
 
     # send POST request to SPrint url and return response
-    Net::HTTP.post URI(configatron.sprint_url),
-                              body.to_json,
-                              'Content-Type' => 'application/json'
+    Net::HTTP.post URI(@@sprint_uri),
+                   body.to_json,
+                   'Content-Type' => 'application/json'
 
+  end
+
+  def self.sprint_uri=(thing)
+    @@sprint_uri = thing
   end
 end
