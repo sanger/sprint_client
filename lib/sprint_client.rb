@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Interfaces with SPrint service: https://github.com/sanger/sprint
-class SprintClient
+class SPrintClient
   require 'uri'
   require 'erb'
 
@@ -44,7 +44,7 @@ class SprintClient
 
   end
 
-  def self.sprint_uri=(thing)
-    @@sprint_uri = thing
+  def self.sprint_uri=(sprint_uri)
+    @@sprint_uri = sprint_uri
   end
 end
