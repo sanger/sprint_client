@@ -1,5 +1,4 @@
 require './spec/spec_helper'
-require 'uri'
 
 describe 'sprint_client' do
     context 'get_template function' do 
