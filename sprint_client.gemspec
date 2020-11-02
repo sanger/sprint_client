@@ -10,4 +10,5 @@ Gem::Specification.new do |s|
   s.homepage    =
     'https://rubygems.org/gems/sprint_client'
   s.license       = 'MIT'
+  s.add_development_dependency('rspec', '~>3.9.0')
 end
