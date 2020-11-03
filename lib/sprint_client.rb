@@ -57,13 +57,16 @@ class SPrintClient
     ERB.new File.read(path)
   end
 
-  private
-  
   def self.set_layouts(merge_fields_list, template)
-    return merge_fields_list.map do |merge_fields|
-      YAML.load template.result binding
+    layouts = []
+    merge_fields_list.each do |merge_fields|
+      template_array = YAML.load template.result binding
+      template_array.each { |ar| layouts << ar }
     end
+    layouts
   end
+
+  private
 
   def self.get_label_template_path(label_template_name)
     File.join('config', 'sprint', 'label_templates', label_template_name)

@@ -2,10 +2,10 @@ describe 'sprint_client' do
 
   let (:query) { #needs this formatting so it matches the query in sprint_client.rb otherwise tests fail with incorrect spacing
     "mutation Print($printRequest: PrintRequest!, $printer: String!) {
-    print(printRequest: $printRequest, printer: $printer) {
-    jobId
-    }
-  }"
+      print(printRequest: $printRequest, printer: $printer) {
+        jobId
+      }
+    }"
   }
 
   context 'get_template function' do
@@ -58,6 +58,21 @@ describe 'sprint_client' do
 
       SPrintClient.send_print_request(printer_name, label_template_name, merge_fields_list)
 
+    end
+  end
+
+  context 'set_layouts function' do
+    it 'should parse the erb yaml file and return the right number of layouts' do
+      dummy_path = "spec/spec_config/label_templates/plate_96.yml.erb"
+      template = SPrintClient.get_template(dummy_path)
+
+      merge_fields_list = [
+        { barcode: "DN111111", date: "1-APR-2020" },
+        { barcode: "DN222222", date: "2-APR-2020" }
+      ]
+
+      layouts = SPrintClient.set_layouts(merge_fields_list, template)
+      expect(layouts.length).to eq(4)
     end
   end
 end
