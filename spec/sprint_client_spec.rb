@@ -53,6 +53,10 @@ describe 'sprint_client' do
 
       allow(SPrintClient).to receive(:get_label_template_path).and_return("spec/spec_config/label_templates/plate_96.yml.erb")
       allow(SPrintClient).to receive(:set_layouts).and_return(["layouts_sets"])
+
+      expect(SPrintClient).to receive(:get_label_template_path).with(label_template_name)
+      expect(SPrintClient).to receive(:get_template).with("spec/spec_config/label_templates/plate_96.yml.erb")
+      expect(SPrintClient).to receive(:set_layouts).with(merge_fields_list, nil)
       expect(SPrintClient).to receive(:send_post)
       .with({:query=>query, :variables=>{:printer=>"test_name", :printRequest=>{:layouts=>["layouts_sets"]}}})
 
