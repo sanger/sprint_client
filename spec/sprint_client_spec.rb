@@ -1,6 +1,13 @@
-require './spec/spec_helper'
-
 describe 'sprint_client' do
+
+    let (:query) { #needs this formatting so it matches the query in sprint_client.rb otherwise tests fail with incorrect spacing
+        "mutation Print($printRequest: PrintRequest!, $printer: String!) {
+      print(printRequest: $printRequest, printer: $printer) {
+        jobId
+      }
+    }"
+    }
+
     context 'get_template function' do 
         it 'should get template when given a successful path' do
             dummy_path = "spec/spec_config/label_templates/plate_96.yml.erb"
@@ -22,11 +29,6 @@ describe 'sprint_client' do
             SPrintClient.sprint_uri = "localhost"
             uri = URI("localhost")
             printer_name = "test_name"
-            query = "mutation Print($printRequest: PrintRequest!, $printer: String!) {
-                print(printRequest: $printRequest, printer: $printer) {
-                jobId
-                }
-            }"
 
             body = {
                 "query": query,
@@ -48,16 +50,11 @@ describe 'sprint_client' do
             merge_fields_list = [{ barcode: "DN111111", date: "1-APR-2020" }, { barcode: "DN222222", date: "2-APR-2020" }] 
             printer_name = "test_name"
             label_template_name = "test_label_name"
-            query = "mutation Print($printRequest: PrintRequest!, $printer: String!) {
-                print(printRequest: $printRequest, printer: $printer) {
-                jobId
-                }
-            }"
 
             allow(SPrintClient).to receive(:get_label_template_path).and_return("spec/spec_config/label_templates/plate_96.yml.erb")
-            allow(SPrintClient).to receive(:set_layouts).and_return("layouts_sets")
+            allow(SPrintClient).to receive(:set_layouts).and_return(["layouts_sets"])
             expect(SPrintClient).to receive(:send_post)
-            .with({:query=>"mutation Print($printRequest: PrintRequest!, $printer: String!) {\n      print(printRequest: $printRequest, printer: $printer) {\n        jobId\n      }\n    }", :variables=>{:printer=>"test_name", :printRequest=>{:layouts=>"layouts_sets"}}})
+            .with({:query=>query, :variables=>{:printer=>"test_name", :printRequest=>{:layouts=>["layouts_sets"]}}})
 
             SPrintClient.send_print_request(printer_name, label_template_name, merge_fields_list)
             
