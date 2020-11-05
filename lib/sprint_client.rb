@@ -4,6 +4,9 @@
 class SPrintClient
   require 'uri'
   require 'erb'
+  require 'yaml'
+  require 'net/http'
+  require 'json'
 
   # printer_name - a string showing which printer to send the request to
   # label_template_name - a string to identify which label template to be used in the print request
@@ -18,13 +21,11 @@ class SPrintClient
     }"
 
     # locate the required label template
-    path = File.join('config', 'sprint', 'label_templates', label_template_name)
-    template = ERB.new File.read(path)
+    path = get_label_template_path(label_template_name)
+    template = get_template(path)
 
     # parse the template for each label
-    layouts = merge_fields_list.map do |merge_fields|
-      YAML.load template.result binding
-    end
+    layouts = set_layouts(merge_fields_list, template)
 
     # build the body of the print request
     body = {
@@ -37,14 +38,38 @@ class SPrintClient
       }
     }
 
-    # send POST request to SPrint url and return response
-    Net::HTTP.post URI(@@sprint_uri),
-                   body.to_json,
-                   'Content-Type' => 'application/json'
+    send_post(body)
 
   end
 
   def self.sprint_uri=(sprint_uri)
     @@sprint_uri = sprint_uri
   end
+
+  def self.send_post(body)
+    # send POST request to SPrint url and return response
+    Net::HTTP.post URI(@@sprint_uri),
+                   body.to_json,
+                   'Content-Type' => 'application/json'
+  end
+
+  def self.get_template(path)
+    ERB.new File.read(path)
+  end
+
+  def self.set_layouts(merge_fields_list, template)
+    layouts = []
+    merge_fields_list.each do |merge_fields|
+      template_array = YAML.load template.result binding
+      template_array.each { |ar| layouts << ar }
+    end
+    layouts
+  end
+
+  private
+
+  def self.get_label_template_path(label_template_name)
+    File.join('config', 'sprint', 'label_templates', label_template_name)
+  end
+
 end

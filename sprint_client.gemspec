@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'sprint_client'
-  s.version     = '0.0.9'
-  s.date        = '2020-10-27'
+  s.version     = '0.0.10'
+  s.date        = '2020-11-05'
   s.summary     = "A client gem for SPrint"
   s.description = ""
   s.authors     = ["Harriet Craven", "Katy Taylor"]
@@ -10,4 +10,5 @@ Gem::Specification.new do |s|
   s.homepage    =
     'https://rubygems.org/gems/sprint_client'
   s.license       = 'MIT'
+  s.add_development_dependency('rspec', '~>3.9.0')
 end
