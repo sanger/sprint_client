@@ -27,7 +27,11 @@ class SPrintClient
 
     # locate the required label template
     path = get_label_template_path(label_template_name)
-    template = get_template(path)
+    begin
+      template = get_template(path)
+    rescue StandardError => e
+      return Net::HTTPResponse.new('1.1', '422', "Could not find label template with name #{label_template_name}")
+    end
 
     # parse the template for each label
     layouts = set_layouts(merge_fields_list, template)
@@ -55,7 +59,6 @@ class SPrintClient
     }
 
     send_post(body)
-
   end
 
   def self.sprint_uri=(sprint_uri)
@@ -67,6 +70,8 @@ class SPrintClient
     Net::HTTP.post URI(@@sprint_uri),
                    body.to_json,
                    'Content-Type' => 'application/json'
+  rescue StandardError => e
+    Net::HTTPResponse.new('1.1', '422', "Failed to send post to #{@@sprint_uri}")
   end
 
   def self.get_template(path)
@@ -82,10 +87,7 @@ class SPrintClient
     layouts
   end
 
-  private
-
   def self.get_label_template_path(label_template_name)
     File.join('config', 'sprint', 'label_templates', label_template_name)
   end
-
 end
