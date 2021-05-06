@@ -11,6 +11,10 @@
 3. Add `SprintClient.sprint_uri = 'http://example.com'` to Rails initializer code, with the correct URI for SPrint
 4. Call `SprintClient.send_print_request()` in the class where required
 
+If you want to point to local gem
+`gem 'sprint_client', path: "/Users/hc6/psd/sprint_client"`
+`bundle update sprint_client`
+
 If the above doesn't work
 1. Run `gem list -r sprint_client` to check the gem is accessible
 2. Run `gem install sprint_client`
