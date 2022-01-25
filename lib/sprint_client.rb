@@ -67,9 +67,14 @@ class SPrintClient
 
   def self.send_post(body)
     # send POST request to SPrint url and return response
-    Net::HTTP.post URI(@@sprint_uri),
-                   body.to_json,
-                   'Content-Type' => 'application/json'
+    uri = URI(@@sprint_uri)
+    req = Net::HTTP::Post.new(uri)
+    req.body = body.to_json
+    req['Content-Type'] = 'application/json'
+
+    Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
+      http.request(req)
+    end
   rescue StandardError => e
     Net::HTTPResponse.new('1.1', '422', "Failed to send post to #{@@sprint_uri}")
   end

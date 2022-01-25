@@ -27,11 +27,26 @@ describe 'sprint_client' do
 
   context 'send_post function' do
     context 'success' do
-      it 'succesfully sends a post with the correct body and uri' do
-        SPrintClient.sprint_uri = 'localhost'
-        printer_name = 'test_name'
+      it 'succesfully posts with a request' do
+        http = double
+        SPrintClient.sprint_uri = 'https://localhost'
+        allow(Net::HTTP).to receive(:start).and_yield http
+        allow(http).to receive(:request)
+          .with(an_instance_of(Net::HTTP::Post))
+          .and_return(Net::HTTPResponse)
+
+        expect(SPrintClient.send_post({})).to eq(Net::HTTPResponse)
+      end
+
+      it 'returns a unprocessable entity response if there is a standard error' do
+        http = double
+        uri = 'https://localhost'
+        SPrintClient.sprint_uri = uri
+        allow(Net::HTTP).to receive(:start).and_raise(StandardError)
+
         response = SPrintClient.send_post({})
-        expect(response.code).to eq '422'
+        expect(response.message).to eq("Failed to send post to #{uri}")
+        expect(response.code).to eq("422")
       end
     end
   end

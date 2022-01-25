@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sprint_client (0.0.10)
+    sprint_client (0.2.0)
 
 GEM
   remote: https://rubygems.org/

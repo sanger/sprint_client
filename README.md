@@ -35,3 +35,10 @@ When updating
 ### Full Example
 
 `SprintClient.send_print_request("a printer", "a label template",[{ barcode: "DN111111", date: "1-APR-2020", barcode_text: "DN111111", workline_identifier: "DN111111", order_role: "Heron", plate_purpose: "LHR PCR 1" }, { barcode: "DN222222", date: "2-APR-2020" barcode_text: "DN222222", workline_identifier: "DN6222222", order_role: "Heron", plate_purpose: "LHR PCR 2" }])`
+
+### Tests
+Tests can be found in the spec/ folder
+
+To run the unit tests run rspec. `bundle exec rspec`
+
+We use rubocop to keep the code clean bundle exec rubocop
